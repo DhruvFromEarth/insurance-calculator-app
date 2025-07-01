@@ -1,0 +1,44 @@
+# Node
+node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+ENV/
+
+# VSCode or other IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Mac system files
+.DS_Store
+
+# Python virtual environment files
+*.egg-info/
+
+# Model files (optional - if large)
+# *.pkl
+
+# Data (optional - if large or sensitive)
+# *.csv
+
+# Electron build artifacts (optional)
+out/
+release/
+*.asar
