@@ -1,8 +1,8 @@
 # My Learning Curve
 
-1. Learned Electron - youtube
+## 1. Learned Electron - youtube
 
-2. serched for how to train an ml model - youtube.
+## 2. serched for how to train an ml model - youtube.
 [Build Your First Machine Learning Project [Full Beginner Walkthrough]](https://www.youtube.com/watch?v=Hr06nSA-qww&t=40s)
 
 - import pandas - data analysis tool
@@ -30,7 +30,7 @@ actually training the model
 testing
 - predictions = reg.predict(test[predictors]) - generate predictions (gives numpy array)
 - test["col4"] = predictions - (optional) added a column for predictions value
-- test.loc[test["col4"] < 0, "predictions"] = 0 - turned negetive values to zero(0).
+- test.loc[test[predictions] < 0, predictions] = 0 - turned negetive values to zero(0).
 - test["col4"] = test["col4"].round() - to round off float value to the nearest integer.
 - from sklearn.metrics import mean_absolute_error - scikitLearn python library
 - print('mean_absolute_error: ', mean_absolute_error(test['col3'], test['col4'])) - prints error in off value
@@ -60,8 +60,9 @@ others
 
 '*' -> important
 
-3. recomended project structure -gpt
-
+## 3. recomended project structure -gpt
+```bash
+v1 -
 your-app/
 │
 ├── frontend/               # React app for the UI
@@ -89,11 +90,115 @@ your-app/
 ├── package.json            # Root Electron + Node config
 └── README.md
 
+v2 -
+my-electron-app/
+│
+├── app/                          # Core application logic (Electron + Frontend)
+│   ├── main/                     # Electron main process
+│   │   ├── main.js
+│   │   └── preload.js
+│   │
+│   ├── renderer/                 # Frontend (React + Vite)
+│   │   ├── components/
+│   │   │   └── Hero.jsx
+│   │   ├── renderer.jsx
+│   │   ├── index.css
+│   │   └── index.html
+│   │
+│   └── vite.config.js            # Vite config for renderer
+│
+├── backend/                      # Flask backend
+│   ├── app.py                    # Flask entry point
+│   ├── socket_handlers.py        # Socket event handlers (modular)
+│   ├── model/                    # ML models or logic
+│   │   └── model.pkl
+│   ├── data/
+│   ├── requirements.txt
+│   └── __init__.py
+│
+├── scripts/                      # Helper scripts
+│   └── start-backend.sh          # Launch Flask backend
+│
+├── electron.config.js            # Forge or Builder config
+├── package.json                  # Dependencies
+├── .nvmrc
+├── README.md
+├── LICENSE
+├── myLearningCurve.md
+└── .gitignore
+```
+
 - alt codes for documentation.
+```bash
 alt 179 │
 alt 195 ├
 alt 192 └
 alt 196 ─
 alt 16 ►
+```
 
-4. flask
+## 4. flask - youtube
+
+[build a meme Python website (Flask Tutorial for Beginners)](https://youtu.be/5aYpkLfkgRE?si=9Tq1ROfmpImBJTHE) - basic
+
+[Flask Documentation](https://flask.palletsprojects.com/en/stable/installation/#install-flask) - nice
+
+- `py -3 -m venv .venv` - create virtual env
+- `source .venv/Scripts/activate` - activate venv (for bash)
+- `pip install flask`
+- `flask --app hello run --debug` - app name hello.py and debug mode is on.
+- using `escape()` will prevent from taking scripts as inputs.
+    ```python
+    from markupsafe import escape
+
+    @app.route("/<name>")   #routing and using <name> variable
+    def hello(name):
+        return f"Hello, {escape(name)}!"
+
+    @app.route('/post/<int:post_id>')   #id is integer
+    def show_post(post_id):
+        return f'Post {post_id}'
+
+    @app.route('/path/<path:subpath>')  # show the subpath after /path/
+    def show_subpath(subpath):
+        return f'Subpath {escape(subpath)}'
+    ```
+
+- HTTP routing
+    ```python
+    from flask import request
+
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        if request.method == 'POST':
+            return do_the_login()
+        else:
+            return show_the_login_form()
+    ```
+    or
+
+    ```python
+    @app.get('/login')
+    def login_get():
+        return show_the_login_form()
+
+    @app.post('/login')
+    def login_post():
+        return do_the_login()
+    ```
+
+[Python Flask Web Development Tutorial in Hindi](https://youtu.be/oA8brF3w5XQ?si=JrtBQRVBHq6_Mz_2)
+
+- `pip install virtualenv`
+- `virtualenv env` - create virtual environment
+- `set-ExecutionPolicy unrestricted` - if scripts are not executing(in powershell)
+- `.\env\Scripts\activate.ps1` - activate virtual environment
+- `pip install flask` - python lib, installed in this env
+
+[Complete Python Flask Tutorial For Data Science Projects In Hindi](https://youtu.be/KF-rDqQfqz0?si=izQttL0PmKZvp1gm)
+
+## Others
+- do data pre processing before splitting.
+
+## IMPORTANT
+- 

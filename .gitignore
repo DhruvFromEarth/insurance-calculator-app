@@ -10,6 +10,7 @@ __pycache__/
 *.pyd
 env/
 venv/
+.venv/
 ENV/
 
 # VSCode or other IDEs
