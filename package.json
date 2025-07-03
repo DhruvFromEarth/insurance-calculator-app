@@ -1,6 +1,6 @@
 {
   "name": "insurance-calculator-app",
-  "productName": "Insurance Calculator App",
+  "productName": "InsuranceCalculatorApp",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
@@ -11,6 +11,9 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
+  },
+  "config": {
+  "forge": "./forge.config.js"
   },
   "repository": {
   "type": "git",

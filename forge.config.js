@@ -1,8 +1,15 @@
+const path = require('path');
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
 module.exports = {
   packagerConfig: {
+    // extraResource: [
+    //   './backend/dist/app.exe'
+    // ], 
+    extraResource: [
+      path.resolve(__dirname, 'backend/dist/app.exe')
+    ],
     asar: true,
   },
   rebuildConfig: {},

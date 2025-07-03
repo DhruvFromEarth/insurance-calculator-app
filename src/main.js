@@ -11,12 +11,13 @@ if (started) {
 }
 
 const startFlask = () => {
-  const backendPath = path.join(__dirname, '../../backend/app.py');
+  const flaskExePath = process.env.NODE_ENV === 'development'
+    ? path.join(__dirname, '../../backend/dist/app.exe') // this path for development
+    : path.join(process.resourcesPath, 'app.exe'); // using this path for production
 
-  // Use 'python3' on Unix-like systems
-  const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
-
-  flaskProcess = spawn(pythonCmd, [backendPath]);
+  flaskProcess = spawn(flaskExePath, [], {
+    windowsHide: true, // True -  Hides the console window on Windows
+  });
 
   flaskProcess.stdout.on('data', (data) => {
     console.log(`[Flask] ${data}`);
@@ -29,7 +30,12 @@ const startFlask = () => {
   flaskProcess.on('close', (code) => {
     console.log(`[Flask] exited with code ${code}`);
   });
+
+  flaskProcess.on('error', (err) => {
+    console.error(`[Flask Spawn Error] ${err}`);
+  });
 };
+
 
 const createWindow = () => {
   // Create the browser window.
@@ -42,7 +48,7 @@ const createWindow = () => {
       // If you are using a preload script, ensure your exposed APIs are safe.
       contextIsolation: true,
       nodeIntegration: false,
-      // devTools: false, // use this wisely, only use when there is no openDevTools() or the app will crash
+      devTools: false, // *use this wisely, only use when there is no openDevTools() or the app will crash
       // For development, webSecurity might sometimes be temporarily disabled to prevent
       // CORS issues if assets are loaded from different origins. However, the Vite plugin
       // typically handles this without needing to disable it. Keep it true in production.
@@ -57,7 +63,7 @@ const createWindow = () => {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools(); // *commment out devtools:false if using this
   } else {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }

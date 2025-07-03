@@ -197,6 +197,8 @@ alt 16 ►
 
 [Complete Python Flask Tutorial For Data Science Projects In Hindi](https://youtu.be/KF-rDqQfqz0?si=izQttL0PmKZvp1gm)
 
+[article - Integrating Python Flask Backend with Electron (Nodejs) Frontend](https://medium.com/red-buffer/integrating-python-flask-backend-with-electron-nodejs-frontend-8ac621d13f72)
+
 ## Others
 - do data pre processing before splitting.
 
@@ -211,4 +213,134 @@ alt 16 ►
 - `pip freeze > requirements.txt` - writes all the packages in this file
 
 ## IMPORTANT
-- 
+- gpt
+    ```md
+    Tip:
+    Also, if your Flask app requires model.pkl or other files, make sure to include them in your app.py like this:
+
+    ```python
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    MODEL_PATH = os.path.join(BASE_DIR, 'model', 'model.pkl')
+    ```
+    And ensure the model folder is also bundled using the --add-data flag if needed:
+
+    ```bash
+    pyinstaller --onefile --add-data "model/model.pkl;model" app.py
+    ```
+    run spec file
+    ```bash
+    pyinstaller app.spec
+    ```
+    ```
+    - ```bash
+    pyinstaller --onefile --hidden-import=flask_cors --hidden-import=sklearn --hidden-import=scipy._lib._uarray --hidden-import=scipy.sparse._csparsetools --add-data "model/model.pkl;model" app.py 
+    ```
+    - the error keeps poping up for a package not included so i did
+
+
+    ```app.spec
+    hiddenimports=[
+        'sklearn.utils._cython_blas',
+        'sklearn.utils._cython_utils',
+        'sklearn.utils._weight_vector',
+        'sklearn._loss',
+        'sklearn._loss.loss',
+        'sklearn._loss.loss_fast',
+        'sklearn.linear_model._cd_fast',
+        'sklearn.tree._utils',
+        'sklearn.tree._tree',
+        'sklearn.utils.sparsetools._graph_validation',
+        'sklearn.utils.sparsetools._split',
+        'sklearn.utils.sparsetools._validation',
+        'scipy._lib.messagestream',
+        'scipy.sparse._csparsetools',
+        'scipy.sparse._index',
+        'scipy.sparse._sparsetools',
+        'scipy.sparse.csgraph._validation',
+        'scipy.special._ufuncs_cxx',
+        'scipy.linalg.cython_blas',
+        'scipy.linalg.cython_lapack',
+        'scipy._lib._ccallback_c',
+        'scipy._lib._numpy_compat',
+        'numpy.core._methods',
+        'numpy.lib.format',
+        'joblib.externals.loky.backend.popen_loky_win32',
+        'joblib.externals.loky.backend.popen_loky_posix',
+    ],
+    ```
+    app.spec keps getting overridden so here it goes
+    ```
+    # -*- mode: python ; coding: utf-8 -*-
+
+
+    a = Analysis(
+        ['app.py'],
+        pathex=[],
+        binaries=[],
+        datas=[('model/model.pkl', 'model')],
+        hiddenimports=[
+            'sklearn.utils._cython_blas',
+            'sklearn.utils._cython_utils',
+            'sklearn.utils._weight_vector',
+            'sklearn._loss',
+            'sklearn._loss.loss',
+            'sklearn._loss.loss_fast',
+            'sklearn.linear_model._cd_fast',
+            'sklearn.tree._utils',
+            'sklearn.tree._tree',
+            'sklearn.utils.sparsetools._graph_validation',
+            'sklearn.utils.sparsetools._split',
+            'sklearn.utils.sparsetools._validation',
+            'scipy._lib.messagestream',
+            'scipy.sparse._csparsetools',
+            'scipy.sparse._index',
+            'scipy.sparse._sparsetools',
+            'scipy.sparse.csgraph._validation',
+            'scipy.special._ufuncs_cxx',
+            'scipy.linalg.cython_blas',
+            'scipy.linalg.cython_lapack',
+            'scipy._lib._ccallback_c',
+            'scipy._lib._numpy_compat',
+            'numpy.core._methods',
+            'numpy.lib.format',
+            'joblib.externals.loky.backend.popen_loky_win32',
+            'joblib.externals.loky.backend.popen_loky_posix',
+            'flask_cors',
+            'sklearn',
+            'scipy._lib._util',
+            'scipy._lib',
+            'scipy.sparse',
+            'scipy.sparse._csparsetools',
+            'scipy._cython_utility',
+            'scipy._cyutility',
+        ],
+        hookspath=[],
+        hooksconfig={},
+        runtime_hooks=[],
+        excludes=[],
+        noarchive=False,
+        optimize=0,
+    )
+    pyz = PYZ(a.pure)
+
+    exe = EXE(
+        pyz,
+        a.scripts,
+        a.binaries,
+        a.datas,
+        [],
+        name='app',
+        debug=False,
+        bootloader_ignore_signals=False,
+        strip=False,
+        upx=True,
+        upx_exclude=[],
+        runtime_tmpdir=None,
+        console=True,
+        disable_windowed_traceback=False,
+        argv_emulation=False,
+        target_arch=None,
+        codesign_identity=None,
+        entitlements_file=None,
+    )
+    ```

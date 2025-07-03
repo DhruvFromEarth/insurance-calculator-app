@@ -4,7 +4,7 @@ function Hero() {
     const formRef = useRef(null);
     const [result, setResult] = useState(null);
 
-    const submitForm = (e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
         const form = formRef.current;
 
@@ -17,14 +17,18 @@ function Hero() {
             region: Number(form.region.value.toLowerCase() === 'northeast' ? 0 : form.region.value.toLowerCase() === 'southeast' ? 1 : form.region.value.toLowerCase() === 'southwest' ? 2 : 3)
         };
 
-        fetch('http://localhost:5000/predict', {
+        try {
+            const res = await fetch('http://localhost:5000/predict', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then(res => res.json())
-            .then(data => { console.log('Prediction:', data); setResult(data); })
-            .catch(err => console.error('Error:', err));
+            body: JSON.stringify(data),
+            });
+
+            const result = await res.json();
+            console.log('Prediction:', result);
+            setResult(result);
+        } 
+        catch (err) { console.error('Error:', err);}
     };
 
     return (<>
@@ -32,12 +36,14 @@ function Hero() {
             <form ref={formRef} className="hero-form" onSubmit={submitForm}>
                 <div className="form-group">
                     <label htmlFor="age">Age:</label>
-                    <input type="float" id="age" defaultValue={49} placeholder="Enter Age" min="0" max="150" required />
+                    <input type="float" id="age" placeholder="Enter Age" min="0" max="150" required />
+                    {/* <input type="float" id="age" defaultValue={49} placeholder="Enter Age" min="0" max="150" required /> */}
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="bmi">BMI:</label>
-                    <input type="float" id="bmi" defaultValue={25.84} placeholder="Enter BMI" min="0" max="80" required />
+                    {/* <input type="float" id="bmi" defaultValue={25.84} placeholder="Enter BMI" min="0" max="80" required /> */}
+                    <input type="float" id="bmi" placeholder="Enter BMI" min="0" max="80" required />
                 </div>
 
                 <div className="form-group">
@@ -65,7 +71,8 @@ function Hero() {
 
                 <div className="form-group">
                     <label htmlFor="children">Children:</label>
-                    <input type="number" id="children" defaultValue={0} placeholder="Number of children" min="0" required />
+                    {/* <input type="number" id="children" defaultValue={0} placeholder="Number of children" min="0" required /> */}
+                    <input type="number" id="children" placeholder="Number of children" min="0" required />
                 </div>
 
                 <div className="form-group">
