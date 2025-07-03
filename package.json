@@ -12,6 +12,10 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/DhruvFromEarth/insurance-calculator-app.git"
+},
   "keywords": [],
   "author": {
     "name": "Dhruv",

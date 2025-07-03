@@ -200,5 +200,15 @@ alt 16 ►
 ## Others
 - do data pre processing before splitting.
 
+
+## steps to setup virtual environment
+- `python -m venv .venv`
+- `source .venv/scripts/activate`
+- `(.venv)` - if you see this, means activated.
+- `pip list` - to check what packages you have in venv
+- `pip install flask` - install whatever
+- recheck with `pip list`
+- `pip freeze > requirements.txt` - writes all the packages in this file
+
 ## IMPORTANT
 - 

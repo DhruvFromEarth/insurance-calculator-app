@@ -1,12 +1,35 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import { spawn } from 'node:child_process';
+
+let flaskProcess = null;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
 
+const startFlask = () => {
+  const backendPath = path.join(__dirname, '../../backend/app.py');
+
+  // Use 'python3' on Unix-like systems
+  const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
+
+  flaskProcess = spawn(pythonCmd, [backendPath]);
+
+  flaskProcess.stdout.on('data', (data) => {
+    console.log(`[Flask] ${data}`);
+  });
+
+  flaskProcess.stderr.on('data', (data) => {
+    console.error(`[Flask Error] ${data}`);
+  });
+
+  flaskProcess.on('close', (code) => {
+    console.log(`[Flask] exited with code ${code}`);
+  });
+};
 
 const createWindow = () => {
   // Create the browser window.
@@ -19,12 +42,15 @@ const createWindow = () => {
       // If you are using a preload script, ensure your exposed APIs are safe.
       contextIsolation: true,
       nodeIntegration: false,
+      // devTools: false, // use this wisely, only use when there is no openDevTools() or the app will crash
       // For development, webSecurity might sometimes be temporarily disabled to prevent
       // CORS issues if assets are loaded from different origins. However, the Vite plugin
       // typically handles this without needing to disable it. Keep it true in production.
       // webSecurity: false,
     },
   });
+
+  mainWindow.setMenuBarVisibility(false);
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -41,6 +67,7 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  startFlask();
   createWindow();
 
   // On OS X it's common to re-create a window in the app when the
@@ -56,6 +83,10 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
+  if (flaskProcess) {
+    flaskProcess.kill();
+  }
+
   if (process.platform !== 'darwin') {
     app.quit();
   }

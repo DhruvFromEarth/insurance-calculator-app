@@ -1,9 +1,10 @@
 import ReactDOM from 'react-dom/client'
 import Hero from './components/Hero.jsx'
+import './index.css'
 
 function App() {
   return (<>
-    <h1>Hello from React inside Electron!</h1>
+    <h1>Insurance Calculator</h1>
     <Hero />
   </>
   )
