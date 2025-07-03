@@ -1,14 +1,16 @@
-from flask import Flask, request, jsonify
+# import eventlet
+# eventlet.monkey_patch()
+from flask import Flask, request
 import pickle
-import numpy as np
-from flask_cors import CORS
 import os
 import pandas as pd
+from flask_socketio import SocketIO, emit
+
 
 app = Flask(__name__)
 
 # Enable CORS for all routes 
-CORS(app, resources={r"/*": {"origins": "*"}})
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, 'model', 'model.pkl')
@@ -66,19 +68,19 @@ def validation(data):
 
     return True, ""
 
-@app.route('/predict', methods=['POST'])
-def pred():
-    data = request.json
+@socketio.on('predict')
+def predict(data):
+    print("Data:", data)
     is_valid, message = validation(data)
     if not is_valid:
-        return jsonify({'error': message}), 400
+        emit('prediction_error', {'error': message})
+        return
 
     df = pd.DataFrame([data])
     df = df[['age', 'sex', 'bmi', 'children', 'smoker', 'region']]
 
     prediction = model.predict(df).item()
-    return jsonify({'prediction': int(prediction)})
-
+    emit('predict_response', {'prediction': int(prediction)})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    socketio.run(app, debug=True, host='127.0.0.1', port=5000, allow_unsafe_werkzeug=True)

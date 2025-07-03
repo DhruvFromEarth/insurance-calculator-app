@@ -187,6 +187,8 @@ alt 16 ►
         return do_the_login()
     ```
 
+- [Flask-socketIO](https://flask-socketio.readthedocs.io/en/latest/)
+
 [Python Flask Web Development Tutorial in Hindi](https://youtu.be/oA8brF3w5XQ?si=JrtBQRVBHq6_Mz_2)
 
 - `pip install virtualenv`
@@ -209,6 +211,6 @@ alt 16 ►
 - `pip install flask` - install whatever
 - recheck with `pip list`
 - `pip freeze > requirements.txt` - writes all the packages in this file
-
+- `pip install -r requirements.txt` - download requirements
 ## IMPORTANT
 - 
